@@ -1,9 +1,9 @@
-<nav>
+<nav ng-if="searchHasResults()">
   <ul class="pager">
-    <li class="previous">
+    <li class="previous" ng-class="{ 'disabled': previousPageDisabled }">
       <a href="" ng-click="previousPage()">&larr; Previous</a>
     </li>
-    <li class="next">
+    <li class="next" ng-class="{ 'disabled': nextPageDisabled }">
       <a href="" ng-click="nextPage()">Next &rarr;</a>
     </li>
   </ul>
