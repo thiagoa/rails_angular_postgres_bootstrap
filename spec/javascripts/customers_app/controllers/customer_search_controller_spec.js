@@ -60,4 +60,31 @@ describe('CustomerSearchController', function() {
       expect(scope.customers).toEqualData(serverResults.records);
     });
   });
+
+  describe('Error handling', function() {
+    var scope = null, controller = null, httpBackend = null;
+
+    beforeEach(function() {
+      module('customers');
+
+      inject(function($controller, $rootScope, $httpBackend) {
+        scope = $rootScope.$new();
+        httpBackend = $httpBackend;
+        controller = $controller('CustomerSearchController', { $scope: scope });
+      });
+
+      httpBackend.when('GET', '/customers.json?keywords=bob&page=0&per_page=10')
+        .respond(500, 'Internal Server Error');
+
+      spyOn(window, 'alert');
+    });
+
+    it('alerts the user about the error', function() {
+      scope.search('bob');
+      httpBackend.flush();
+
+      expect(scope.customers).toEqualData([]);
+      expect(window.alert).toHaveBeenCalledWith('There was a problem: 500');
+    });
+  });
 });
