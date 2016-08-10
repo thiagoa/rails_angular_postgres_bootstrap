@@ -15,8 +15,8 @@
     </form>
   </section>
 
-  <section class="search-results">
-    <header ng-if="searchHasResults()">
+  <section class="search-results" ng-if="customers.length > 0">
+    <header ng-if="customers.length > 0">
       <h1 class="h3">Results</h1>
     </header>
 
