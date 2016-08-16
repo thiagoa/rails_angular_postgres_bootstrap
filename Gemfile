@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 
+gem 'angular-rails-templates'
 gem 'faker'
 gem 'bower-rails'
 gem 'devise'
