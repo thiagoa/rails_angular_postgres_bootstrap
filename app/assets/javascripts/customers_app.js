@@ -4,10 +4,13 @@ app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', {
     controller: 'CustomerSearchController',
     templateUrl: 'customer_search.html'
+  }).when('/:id', {
+    controller: 'CustomerDetailController',
+    templateUrl: 'customer_detail.html'
   });
 }]);
 
-var CustomerSearchController = function($scope, $http) {
+var CustomerSearchController = function($scope, $http, $location) {
   var page = 0, perPage = 10;
 
   function initializeScope() {
@@ -15,6 +18,7 @@ var CustomerSearchController = function($scope, $http) {
     $scope.previousPage = previousPage;
     $scope.nextPage = nextPage;
     $scope.searchHasResults = searchHasResults;
+    $scope.viewDetails = viewDetails;
 
     hidePagination();
   }
@@ -99,10 +103,33 @@ var CustomerSearchController = function($scope, $http) {
     return !$scope.previousPageDisabled || !$scope.nextPageDisabled;
   }
 
+  function viewDetails(customer) {
+    $location.path('/' + customer.id);
+  }
+
   initialize();
+};
+
+var CustomerDetailController = function CustomerDetailController($scope, $http, $routeParams) {
+  var customerId = $routeParams.id;
+  $scope.customer = {};
+
+  $http
+    .get('/customers/' + customerId + '.json')
+    .success(function(data, status, headers, config) {
+      $scope.customer = data;
+    })
+    .error(function(data, status, headers, config) {
+      alert('Ther was a problem: ' + status);
+    });
 };
 
 app.controller(
   'CustomerSearchController',
-  ['$scope', '$http', CustomerSearchController]
+  ['$scope', '$http', '$location', CustomerSearchController]
+);
+
+app.controller(
+  'CustomerDetailController',
+  ['$scope', '$http', '$routeParams', CustomerDetailController]
 );
