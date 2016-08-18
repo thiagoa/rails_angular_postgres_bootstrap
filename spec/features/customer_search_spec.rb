@@ -28,6 +28,7 @@ feature 'Customer Search' do
     create_customer(first_name: 'Bob', last_name: 'Jones', email: 'bob123@somewhere.net')
 
     visit '/customers'
+
     fill_in 'Email', with: 'bob@example.com'
     fill_in 'Password', with: 'password123'
     click_button 'Log in'
