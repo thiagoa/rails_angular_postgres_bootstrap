@@ -1,4 +1,4 @@
-var app = angular.module('customers', ['ngRoute', 'templates']);
+var app = angular.module('customers', ['ngRoute', 'ngResource', 'templates']);
 
 app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', {
@@ -110,18 +110,11 @@ var CustomerSearchController = function($scope, $http, $location) {
   initialize();
 };
 
-var CustomerDetailController = function CustomerDetailController($scope, $http, $routeParams) {
+var CustomerDetailController = function CustomerDetailController($scope, $http, $routeParams, $resource) {
   var customerId = $routeParams.id;
-  $scope.customer = {};
+  var Customer = $resource('/customers/:customerId.json');
 
-  $http
-    .get('/customers/' + customerId + '.json')
-    .success(function(data, status, headers, config) {
-      $scope.customer = data;
-    })
-    .error(function(data, status, headers, config) {
-      alert('Ther was a problem: ' + status);
-    });
+  $scope.customer = Customer.get({customerId: customerId});
 };
 
 app.controller(
@@ -131,5 +124,5 @@ app.controller(
 
 app.controller(
   'CustomerDetailController',
-  ['$scope', '$http', '$routeParams', CustomerDetailController]
+  ['$scope', '$http', '$routeParams', '$resource', CustomerDetailController]
 );
