@@ -92,23 +92,35 @@
         </header>
 
         <section class="panel-body">
-          <article ng-controller="CustomerCreditCardController">
+          <article ng-controller="CustomerCreditCardController" ng-init="fetchCreditCardInfo(customerId)">
             <div class="row">
-              <div class="col-md-7">
-                <p class="h4">
-                  ****-****-****-{{creditCard.lastFour}}
-                  <span class="label label-success">{{creditCard.cardType}}</span>
-                </p>
-
-                <p>
-                  <label>Expires:</label> {{creditCard.expirationMonth}}/{{creditCard.expirationYear}}
-                </p>
+              <div ng-if="!creditCard.$resolved">
+                <div class="col-md-10 col-md-offset-1">
+                  <aside class="progress">
+                    <div class="progress-bar progress-bar-striped active" style="width: 100%">
+                      Loading...
+                    </div>
+                  </aside>
+                </div>
               </div>
 
-              <div class="col-md-5 text-right">
-                <a href="{{creditCard.detailsLink}}" class="btn btn-lg btn-default">
-                  View Details...
-                </a>
+              <div ng-if="creditCard.$resolved">
+                <div class="col-md-7">
+                  <p class="h4">
+                    ****-****-****-{{creditCard.lastFour}}
+                    <span class="label label-success">{{creditCard.cardType}}</span>
+                  </p>
+
+                  <p>
+                    <label>Expires:</label> {{creditCard.expirationMonth}}/{{creditCard.expirationYear}}
+                  </p>
+                </div>
+
+                <div class="col-md-5 text-right">
+                  <a href="{{creditCard.detailsLink}}" class="btn btn-lg btn-default">
+                    View Details...
+                  </a>
+                </div>
               </div>
             </div>
           </article>
