@@ -110,12 +110,18 @@ var CustomerSearchController = function($scope, $http, $location) {
   initialize();
 };
 
-var CustomerDetailController = function CustomerDetailController($scope, $http, $routeParams, $resource) {
+var CustomerDetailController = function CustomerDetailController($scope, $routeParams, $resource) {
   var customerId = $routeParams.id;
   var Customer = $resource('/customers/:customerId.json');
 
   $scope.customer = Customer.get({customerId: customerId});
 };
+
+var CustomerCreditCardController = function CustomerCreditCardController($scope, $resource) {
+  var CreditCardInfo = $resource('/fake_billing.json');
+
+  $scope.creditCard = CreditCardInfo.get({cardholder_id: 1234});
+}
 
 app.controller(
   'CustomerSearchController',
@@ -123,6 +129,11 @@ app.controller(
 );
 
 app.controller(
+  'CustomerCreditCardController',
+  ['$scope', '$resource', CustomerCreditCardController]
+);
+
+app.controller(
   'CustomerDetailController',
-  ['$scope', '$http', '$routeParams', '$resource', CustomerDetailController]
+  ['$scope', '$routeParams', '$resource', CustomerDetailController]
 );

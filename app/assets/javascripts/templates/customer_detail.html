@@ -92,23 +92,23 @@
         </header>
 
         <section class="panel-body">
-          <article>
+          <article ng-controller="CustomerCreditCardController">
             <div class="row">
               <div class="col-md-7">
                 <p class="h4">
-                  ****-****-****-1234
-                  <span class="label label-success">VISA</span>
+                  ****-****-****-{{creditCard.lastFour}}
+                  <span class="label label-success">{{creditCard.cardType}}</span>
                 </p>
 
                 <p>
-                  <label>Expires:</label> 04/19
+                  <label>Expires:</label> {{creditCard.expirationMonth}}/{{creditCard.expirationYear}}
                 </p>
               </div>
 
               <div class="col-md-5 text-right">
-                <button class="btn btn-lg btn-default">
+                <a href="{{creditCard.detailsLink}}" class="btn btn-lg btn-default">
                   View Details...
-                </button>
+                </a>
               </div>
             </div>
           </article>
