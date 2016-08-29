@@ -1,4 +1,7 @@
-var app = angular.module('customers', ['ngRoute', 'ngResource', 'templates']);
+var app = angular.module(
+  'customers',
+  ['ngRoute', 'ngResource', 'ngMessages', 'templates']
+);
 
 app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', {
@@ -112,9 +115,32 @@ var CustomerSearchController = function($scope, $http, $location) {
 
 var CustomerDetailController = function CustomerDetailController($scope, $routeParams, $resource) {
   var customerId = $routeParams.id;
-  var Customer = $resource('/customers/:customerId.json');
+  var Customer = $resource(
+    '/customers/:customerId.json',
+    {customerId: '@customer_id'},
+    {save: {method: 'PUT'}}
+  );
+
+  function save() {
+    if ($scope.form.$invalid) {
+      return;
+    }
+
+    $scope.customer.$save(
+      function() {
+        $scope.form.$setPristine();
+        $scope.form.$setUntouched();
+
+        alert('Save successful!');
+      },
+      function() {
+        alert('Save failed!');
+      }
+    );
+  }
 
   $scope.customerId = customerId;
+  $scope.save = save;
   $scope.customer = Customer.get({customerId: customerId});
 };
 
